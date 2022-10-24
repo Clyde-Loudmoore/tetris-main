@@ -1,43 +1,46 @@
-const playingField = document.querySelector(".tetris__playing-field");
-const play = document.querySelector(".tetris__play");
+const contentWrapper = document.querySelector(".tetris__content-wrapper");
+const playBtn = document.querySelector(".tetris__pla-btn");
 const nextFigure = document.querySelector(".tetris__next-figure");
 const score = document.querySelector(".tetris__score");
 const record = document.querySelector(".tetris__record");
 const level = document.querySelector(".tetris__level");
 let speed = document.querySelector(".tetris__speed");
+
+const playingField = document.createElement("div");
+playingField.classList.add("tetris__playing-field");
+contentWrapper.prepend(playingField);
+
 let gameSpeed = 400;
 let scoreInnerHtml = 0;
 let levelInnerHtml = 1;
 
-let playBoard = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-];
+const widthArray = 10;
+const heightArray = 20;
+const divCell = 0;
+
+let playBoard = [];
+for (let h = 0; h < 20; h++) {
+  const arr = [];
+  for (let w = 0; w < 10; w++) {
+    arr.push(0);
+  }
+  playBoard.push(arr);
+}
+
+for (let i = 0; i < 200; i++) {
+  const divCell = document.createElement("div");
+  divCell.classList.add("tetris__cell");
+  playingField.appendChild(divCell);
+}
+
+console.log(playBoard);
 
 const update = () => {
   let divTetris = "";
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
       if (playBoard[y][x] === 1 || playBoard[y][x] === 4) {
-        divTetris += '<div class="tetris__cell tetris__movingCell"></div>';
+        divTetris += '<div class="tetris__movingCell"></div>';
       } else {
         divTetris += '<div class="tetris__cell"></div>';
       }
@@ -54,7 +57,7 @@ const updateNextFigure = () => {
   for (let y = 0; y < nextFigureElem.shape.length; y++) {
     for (let x = 0; x < nextFigureElem.shape[y].length; x++) {
       if (nextFigureElem.shape[y][x]) {
-        divTetris += '<div class="tetris__cell tetris__movingCell"></div>';
+        divTetris += '<div class="tetris__movingCell"></div>';
       } else {
         divTetris += '<div class="tetris__cell"></div>';
       }
@@ -198,22 +201,17 @@ const scoring = (removeLine) => {
   level.innerHTML = `Level: ${levelInnerHtml}`;
   if (scoreInnerHtml === 10 && gameSpeed > 350) {
     gameSpeed = 350;
-  }
-  if (scoreInnerHtml === 30 && gameSpeed > 300) {
+  } else if (scoreInnerHtml === 30 && gameSpeed > 300) {
     gameSpeed = 300;
-  }
-  if (scoreInnerHtml === 50 && gameSpeed > 250) {
+  } else if (scoreInnerHtml === 50 && gameSpeed > 250) {
     levelInnerHtml = 2;
     gameSpeed = 250;
-  }
-  if (scoreInnerHtml === 70 && gameSpeed > 200) {
+  } else if (scoreInnerHtml === 70 && gameSpeed > 200) {
     gameSpeed = 200;
-  }
-  if (scoreInnerHtml === 90 && gameSpeed > 130) {
+  } else if (scoreInnerHtml === 90 && gameSpeed > 130) {
     levelInnerHtml = 3;
     gameSpeed = 130;
-  }
-  if (scoreInnerHtml > 110) {
+  } else if (scoreInnerHtml > 110) {
     gameSpeed = 100;
   }
 };
@@ -249,28 +247,14 @@ const startGame = () => {
       `Вы проиграли со счётом ${scoreInnerHtml}. Начать игру заново?`
     );
     if (restart) {
-      playBoard = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      ];
+      playBoard = [];
+      for (let h = 0; h < 20; h++) {
+        const arr = [];
+        for (let w = 0; w < 10; w++) {
+          arr.push(0);
+        }
+        playBoard.push(arr);
+      }
     } else {
       return;
     }
@@ -285,4 +269,4 @@ const startGame = () => {
 speed.addEventListener("change", function (event) {
   gameSpeed = event.target.value;
 });
-play.addEventListener("click", startGame);
+playBtn.addEventListener("click", startGame);

@@ -29,8 +29,6 @@
 
 .tetris__next-figure{
     font-size: 0;
-    border: 3px solid #006f6f;
-    border-radius: 5px;
     width: 128px;
     height: 128px;
     text-align: center;
@@ -45,6 +43,11 @@
     padding: 0;
 }
 .tetris__movingCell{
+    width: 30px;
+    height: 30px;
+    border: 1px solid silver;
+    display: inline-block;
+    padding: 0;
     background: blue;
 }
 .tetris__menu-wrapper{
