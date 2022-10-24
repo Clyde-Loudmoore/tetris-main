@@ -1,0 +1,83 @@
+
+.container{
+    max-width: 800px;
+}
+.tetris__content-wrapper{
+    background: #004a6f;
+    margin: auto;
+    padding: 20px 0;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.tetris__item-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tetris__playing-field{
+    width: 320px;
+    height: 640px;
+    background: #003b59;
+    border: 4px solid #006f6f;
+    font-size: 0;
+    border-radius: 5px;
+}
+
+.tetris__next-figure{
+    font-size: 0;
+    border: 3px solid #006f6f;
+    border-radius: 5px;
+    width: 128px;
+    height: 128px;
+    text-align: center;
+
+}
+
+.tetris__cell{
+    width: 30px;
+    height: 30px;
+    border: 1px solid silver;
+    display: inline-block;
+    padding: 0;
+}
+.tetris__movingCell{
+    background: blue;
+}
+.tetris__menu-wrapper{
+    background: #dcf2ff88;
+    border: 2px solid #006f6f;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+p{
+    margin-top: 0;
+}
+.tetris__headline{
+    width: 150px;
+    text-align: center;
+}
+.tetris__points{
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+.tetris__speed{
+    width: 110px;
+    margin: 0 10px;
+    border: 1px solid #006f6f;
+    border-radius: 5px;
+    text-align: center;
+}
+.tetris__play{
+    width: 80px;
+    height: 40px;
+    border: 2px solid #006f6f;
+    border-radius: 15px;
+    margin: 20px;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="tetris.css" />
+    <script src="tetris.js" defer></script>
+    <title>Tetris</title>
+  </head>
+  <body>
+    <section class="tetris__content-wrapper container">
+      <div class="tetris__playing-field"></div>
+      <div class="tetris__item-container">
+        <div class="tetris__next-figure"></div>
+        <div class="tetris__menu-wrapper">
+          <h1 class="tetris__headline">TETRIS</h1>
+          <div class="tetris__points">
+            <p class="tetris__score">Score: 0</p>
+            <p class="tetris__record">Record: 0</p>
+            <p class="tetris__level">Level: 1</p>
+            <h3 class="tetris__headline">
+              Перед стартом выберите скорость игры и нажмите Enter:
+            </h3>
+            <input
+              class="tetris__speed"
+              type="number"
+              step="50"
+              min="100"
+              max="400"
+              placeholder="(100 - 400)"
+            />
+          </div>
+          <button class="tetris__play">PLAY</button>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
