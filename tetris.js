@@ -14,10 +14,14 @@ let gameSpeed = 400;
 let scoreInnerHtml = 0;
 let levelInnerHtml = 1;
 
+const widthArray = 10;
+const heightArray = 20;
+
 let playBoard = [];
-for (let h = 0; h < 20; h++) {
+
+for (let h = 0; h < heightArray; h++) {
   const arr = [];
-  for (let w = 0; w < 10; w++) {
+  for (let w = 0; w < widthArray; w++) {
     arr.push(0);
   }
   playBoard.push(arr);
@@ -242,14 +246,7 @@ const startGame = () => {
       `Вы проиграли со счётом ${scoreInnerHtml}. Начать игру заново?`
     );
     if (restart) {
-      playBoard = [];
-      for (let h = 0; h < 20; h++) {
-        const arr = [];
-        for (let w = 0; w < 10; w++) {
-          arr.push(0);
-        }
-        playBoard.push(arr);
-      }
+      playBoard;
     } else {
       return;
     }
