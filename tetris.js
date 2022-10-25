@@ -1,22 +1,18 @@
-const contentWrapper = document.querySelector(".tetris__content-wrapper");
-const playBtn = document.querySelector(".tetris__pla-btn");
-const nextFigure = document.querySelector(".tetris__next-figure");
-const score = document.querySelector(".tetris__score");
-const record = document.querySelector(".tetris__record");
-const level = document.querySelector(".tetris__level");
-let speed = document.querySelector(".tetris__speed");
+const $contentWrapper = document.querySelector(".tetris__content-wrapper");
+const $playBtn = document.querySelector(".tetris__play-btn");
+const $nextFigure = document.querySelector(".tetris__next-figure");
+const $score = document.querySelector(".tetris__score");
+const $record = document.querySelector(".tetris__record");
+const $level = document.querySelector(".tetris__level");
+let $speed = document.querySelector(".tetris__speed");
 
-const playingField = document.createElement("div");
-playingField.classList.add("tetris__playing-field");
-contentWrapper.prepend(playingField);
+const $playingField = document.createElement("div");
+$playingField.className = "tetris__playing-field";
+$contentWrapper.prepend($playingField);
 
 let gameSpeed = 400;
 let scoreInnerHtml = 0;
 let levelInnerHtml = 1;
-
-const widthArray = 10;
-const heightArray = 20;
-const divCell = 0;
 
 let playBoard = [];
 for (let h = 0; h < 20; h++) {
@@ -26,27 +22,26 @@ for (let h = 0; h < 20; h++) {
   }
   playBoard.push(arr);
 }
+console.log(playBoard);
 
 for (let i = 0; i < 200; i++) {
-  const divCell = document.createElement("div");
-  divCell.classList.add("tetris__cell");
-  playingField.appendChild(divCell);
+  const $divCell = document.createElement("div");
+  $divCell.className = "tetris__cell";
+  $playingField.append($divCell);
 }
-
-console.log(playBoard);
 
 const update = () => {
   let divTetris = "";
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
-      if (playBoard[y][x] === 1 || playBoard[y][x] === 4) {
+      if (playBoard[y][x] === 1 || playBoard[y][x] === 9) {
         divTetris += '<div class="tetris__movingCell"></div>';
       } else {
         divTetris += '<div class="tetris__cell"></div>';
       }
     }
   }
-  playingField.innerHTML = divTetris;
+  $playingField.innerHTML = divTetris;
   if (hasCollision()) {
     return;
   }
@@ -64,7 +59,7 @@ const updateNextFigure = () => {
     }
     divTetris += "<br/>";
   }
-  nextFigure.innerHTML = divTetris;
+  $nextFigure.innerHTML = divTetris;
 };
 const figures = {
   J: [
@@ -147,7 +142,7 @@ const fixedFigure = () => {
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
       if (playBoard[y][x] === 1) {
-        playBoard[y][x] = 4;
+        playBoard[y][x] = 9;
       }
     }
   }
@@ -169,7 +164,7 @@ const hasCollision = () => {
         figure.shape[y][x] &&
         (playBoard[figure.y + y] === undefined ||
           playBoard[figure.y + y][figure.x + x] === undefined ||
-          playBoard[figure.y + y][figure.x + x] === 4)
+          playBoard[figure.y + y][figure.x + x] === 9)
       ) {
         return true;
       }
@@ -181,7 +176,7 @@ const removeFullLines = () => {
   let removeLine = true;
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
-      if (playBoard[y][x] !== 4) {
+      if (playBoard[y][x] !== 9) {
         removeLine = false;
       }
     }
@@ -197,8 +192,8 @@ const scoring = (removeLine) => {
   if (removeLine) {
     scoreInnerHtml += 10;
   }
-  score.innerHTML = `Score: ${scoreInnerHtml}`;
-  level.innerHTML = `Level: ${levelInnerHtml}`;
+  $score.innerHTML = `Score: ${scoreInnerHtml}`;
+  $level.innerHTML = `Level: ${levelInnerHtml}`;
   if (scoreInnerHtml === 10 && gameSpeed > 350) {
     gameSpeed = 350;
   } else if (scoreInnerHtml === 30 && gameSpeed > 300) {
@@ -266,7 +261,16 @@ const startGame = () => {
   setTimeout(startGame, gameSpeed);
 };
 
-speed.addEventListener("change", function (event) {
+$speed.addEventListener("change", (event) => {
   gameSpeed = event.target.value;
 });
-playBtn.addEventListener("click", startGame);
+
+let flag = true;
+
+$playBtn.addEventListener("click", () => {
+  if (flag) {
+    flag = false;
+    return startGame();
+  }
+  window.location.reload();
+});
