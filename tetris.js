@@ -29,18 +29,22 @@ for (let i = 0; i < 200; i++) {
   $playingField.append($divCell);
 }
 
+let colorValue;
+
 const update = () => {
+  colorValue = figure.color;
   let divTetris = "";
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
       if (playBoard[y][x] === 1 || playBoard[y][x] === 9) {
-        divTetris += `<div class="${figure.color}"></div>`;
+        divTetris += `<div class="${colorValue}"></div>`;
         $playingField.innerHTML = divTetris;
       } else {
         divTetris += '<div class="tetris__cell"></div>';
       }
     }
   }
+
   $playingField.innerHTML = divTetris;
   if (hasCollision()) {
     return;
@@ -49,7 +53,7 @@ const update = () => {
   for (let y = 0; y < nextFigureElem.shape.length; y++) {
     for (let x = 0; x < nextFigureElem.shape[y].length; x++) {
       if (nextFigureElem.shape[y][x]) {
-        divTetrisPreview += `<div class="${figure.color}"></div>`;
+        divTetrisPreview += `<div class="${colorValue}"></div>`;
       } else {
         divTetrisPreview += '<div class="tetris__cell"></div>';
       }
@@ -58,8 +62,6 @@ const update = () => {
   }
   $nextFigure.innerHTML = divTetrisPreview;
 };
-
-
 
 const figures = {
   J: [
@@ -121,7 +123,6 @@ const getNewFigure = () => {
   const randomColor = colors[getRandomNum(colorIndex)];
   const midfield = figuresNameList.length - 1;
   const figure = figures[figuresNameList[getRandomNum(midfield)]];
-  console.log(figure);
   return {
     x: Math.ceil((arrayWidth - 2) / 2),
     y: 0,
@@ -242,8 +243,7 @@ document.addEventListener("keydown", (e) => {
     rotateFigure();
   }
   addFigure();
-  update(figure);
-  // updateNextFigure();
+  update();
 });
 
 const startGame = () => {
@@ -262,8 +262,6 @@ const startGame = () => {
   }
   addFigure();
   update();
-  // updateNextFigure();
-
   setTimeout(startGame, gameSpeed);
 };
 
