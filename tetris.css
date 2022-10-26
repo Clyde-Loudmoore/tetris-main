@@ -2,7 +2,7 @@
 .container{
     max-width: 800px;
 }
-.tetris__content-wrapper{
+#tetris__content-wrapper{
     background: #004a6f;
     margin: auto;
     padding: 20px 0;
@@ -27,7 +27,7 @@
     border-radius: 5px;
 }
 
-.tetris__next-figure{
+#tetris__next-figure{
     font-size: 0;
     width: 128px;
     height: 128px;
@@ -35,21 +35,48 @@
 
 }
 
-.tetris__cell{
+.tetris__cell,
+.tetris__blue,
+.tetris__goldenrod,
+.tetris__yellow,
+.tetris__purple,
+.tetris__red,
+.tetris__violet,
+.tetris__green{
     width: 30px;
     height: 30px;
     border: 1px solid silver;
     display: inline-block;
     padding: 0;
 }
-.tetris__movingCell{
-    width: 30px;
-    height: 30px;
-    border: 1px solid silver;
-    display: inline-block;
-    padding: 0;
+.tetris__blue{
     background: blue;
 }
+
+.tetris__goldenrod{
+    background: goldenrod;
+}
+
+.tetris__yellow{
+    background: yellow;
+}
+
+.tetris__purple{
+    background: purple;
+}
+
+.tetris__red{
+    background: red;
+}
+
+.tetris__violet{
+    background: violet;
+}
+
+.tetris__green{
+    background: green;
+}
+
 .tetris__menu-wrapper{
     background: #dcf2ff88;
     border: 2px solid #006f6f;
@@ -70,14 +97,14 @@ p{
     flex-direction: column;
     align-items: center
 }
-.tetris__speed{
+#tetris__speed{
     width: 110px;
     margin: 0 10px;
     border: 1px solid #006f6f;
     border-radius: 5px;
     text-align: center;
 }
-.tetris__play-btn{
+#tetris__play-btn{
     width: 80px;
     height: 40px;
     border: 2px solid #006f6f;

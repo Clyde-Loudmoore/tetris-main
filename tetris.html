@@ -9,20 +9,20 @@
     <title>Tetris</title>
   </head>
   <body>
-    <section class="tetris__content-wrapper container">
+    <section id="tetris__content-wrapper" class="container">
       <div class="tetris__item-container">
-        <div class="tetris__next-figure"></div>
+        <div id="tetris__next-figure"></div>
         <div class="tetris__menu-wrapper">
           <h1 class="tetris__headline">TETRIS</h1>
           <div class="tetris__points">
-            <p class="tetris__score">Score: 0</p>
-            <p class="tetris__record">Record: 0</p>
-            <p class="tetris__level">Level: 1</p>
+            <p id="tetris__score">Score: 0</p>
+            <p id="tetris__record">Record: 0</p>
+            <p id="tetris__level">Level: 1</p>
             <h3 class="tetris__headline">
               Перед стартом выберите скорость игры и нажмите Enter:
             </h3>
             <input
-              class="tetris__speed"
+              id="tetris__speed"
               type="number"
               step="50"
               min="100"
@@ -30,7 +30,7 @@
               placeholder="(100 - 400)"
             />
           </div>
-          <button class="tetris__play-btn">PLAY</button>
+          <button id="tetris__play-btn">PLAY</button>
         </div>
       </div>
     </section>

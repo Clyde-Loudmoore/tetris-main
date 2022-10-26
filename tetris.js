@@ -1,36 +1,31 @@
-const $contentWrapper = document.querySelector(".tetris__content-wrapper");
-const $playBtn = document.querySelector(".tetris__play-btn");
-const $nextFigure = document.querySelector(".tetris__next-figure");
-const $score = document.querySelector(".tetris__score");
-const $record = document.querySelector(".tetris__record");
-const $level = document.querySelector(".tetris__level");
-let $speed = document.querySelector(".tetris__speed");
+const $contentWrapper = document.getElementById("tetris__content-wrapper");
+const $playBtn = document.getElementById("tetris__play-btn");
+const $nextFigure = document.getElementById("tetris__next-figure");
+const $score = document.getElementById("tetris__score");
+const $record = document.getElementById("tetris__record");
+const $level = document.getElementById("tetris__level");
+let $initialGameSpeed = document.getElementById("tetris__speed");
 
 const $playingField = document.createElement("div");
-$playingField.className = "tetris__playing-field";
+$playingField.classList.add("tetris__playing-field");
 $contentWrapper.prepend($playingField);
 
 let gameSpeed = 400;
-let scoreInnerHtml = 0;
+let scoreValue = 0;
 let levelInnerHtml = 1;
 
-const widthArray = 10;
-const heightArray = 20;
+const arrayWidth = 10;
+const arrayHeight = 20;
 
-let playBoard = [];
+let playBoard = new Array(arrayHeight)
+  .fill(null)
+  .map(() => new Array(arrayWidth).fill(0));
 
-for (let h = 0; h < heightArray; h++) {
-  const arr = [];
-  for (let w = 0; w < widthArray; w++) {
-    arr.push(0);
-  }
-  playBoard.push(arr);
-}
 console.log(playBoard);
 
 for (let i = 0; i < 200; i++) {
   const $divCell = document.createElement("div");
-  $divCell.className = "tetris__cell";
+  $divCell.classList.add("tetris__cell");
   $playingField.append($divCell);
 }
 
@@ -39,7 +34,8 @@ const update = () => {
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
       if (playBoard[y][x] === 1 || playBoard[y][x] === 9) {
-        divTetris += '<div class="tetris__movingCell"></div>';
+        divTetris += `<div class="${figure.color}"></div>`;
+        $playingField.innerHTML = divTetris;
       } else {
         divTetris += '<div class="tetris__cell"></div>';
       }
@@ -49,22 +45,22 @@ const update = () => {
   if (hasCollision()) {
     return;
   }
-};
-
-const updateNextFigure = () => {
-  let divTetris = "";
+  let divTetrisPreview = "";
   for (let y = 0; y < nextFigureElem.shape.length; y++) {
     for (let x = 0; x < nextFigureElem.shape[y].length; x++) {
       if (nextFigureElem.shape[y][x]) {
-        divTetris += '<div class="tetris__movingCell"></div>';
+        divTetrisPreview += `<div class="${figure.color}"></div>`;
       } else {
-        divTetris += '<div class="tetris__cell"></div>';
+        divTetrisPreview += '<div class="tetris__cell"></div>';
       }
     }
-    divTetris += "<br/>";
+    divTetrisPreview += "<br/>";
   }
-  $nextFigure.innerHTML = divTetris;
+  $nextFigure.innerHTML = divTetrisPreview;
 };
+
+
+
 const figures = {
   J: [
     [0, 1, 0],
@@ -102,17 +98,40 @@ const figures = {
     [0, 0, 0],
   ],
 };
+const figuresNameList = Object.keys(figures);
+
+const colors = {
+  1: "tetris__blue",
+  2: "tetris__goldenrod",
+  3: "tetris__yellow",
+  4: "tetris__purple",
+  5: "tetris__red",
+  6: "tetris__violet",
+  7: "tetris__green",
+};
+const colorsNameList = Object.keys(colors);
+
+const getRandomNum = (max) => {
+  return Math.ceil(Math.random() * max);
+};
+const colorIndex = colorsNameList.length - 1;
+const randomColor = colors[getRandomNum(colorIndex)];
+
 const getNewFigure = () => {
-  const possibleFigure = "JIOLZTS";
-  const random = Math.floor(Math.random() * 7);
-  const figure = figures[possibleFigure[random]];
+  const randomColor = colors[getRandomNum(colorIndex)];
+  const midfield = figuresNameList.length - 1;
+  const figure = figures[figuresNameList[getRandomNum(midfield)]];
+  console.log(figure);
   return {
-    x: Math.floor((10 - figure[0].length) / 2),
+    x: Math.ceil((arrayWidth - 2) / 2),
     y: 0,
     shape: figure,
+    color: randomColor,
   };
 };
+
 let figure = getNewFigure();
+
 let nextFigureElem = getNewFigure();
 const removePrevFigure = () => {
   for (let y = 0; y < playBoard.length; y++) {
@@ -177,45 +196,33 @@ const hasCollision = () => {
   return false;
 };
 const removeFullLines = () => {
-  let removeLine = true;
+  let isLineRemoved = true;
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
       if (playBoard[y][x] !== 9) {
-        removeLine = false;
+        isLineRemoved = false;
       }
     }
-    if (removeLine) {
+    if (isLineRemoved) {
       playBoard.splice(y, 1);
-      playBoard.splice(0, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-      scoring(removeLine);
+      playBoard.splice(0, 0, new Array(arrayWidth).fill(0));
+      scoring(isLineRemoved);
     }
-    removeLine = true;
+    isLineRemoved = true;
   }
 };
-const scoring = (removeLine) => {
-  if (removeLine) {
-    scoreInnerHtml += 10;
+const scoring = (isLineRemoved) => {
+  if (isLineRemoved) {
+    scoreValue += 10;
   }
-  $score.innerHTML = `Score: ${scoreInnerHtml}`;
+  $score.innerHTML = `Score: ${scoreValue}`;
   $level.innerHTML = `Level: ${levelInnerHtml}`;
-  if (scoreInnerHtml === 10 && gameSpeed > 350) {
-    gameSpeed = 350;
-  } else if (scoreInnerHtml === 30 && gameSpeed > 300) {
-    gameSpeed = 300;
-  } else if (scoreInnerHtml === 50 && gameSpeed > 250) {
-    levelInnerHtml = 2;
-    gameSpeed = 250;
-  } else if (scoreInnerHtml === 70 && gameSpeed > 200) {
-    gameSpeed = 200;
-  } else if (scoreInnerHtml === 90 && gameSpeed > 130) {
-    levelInnerHtml = 3;
-    gameSpeed = 130;
-  } else if (scoreInnerHtml > 110) {
-    gameSpeed = 100;
+  if (isLineRemoved && gameSpeed != 100) {
+    gameSpeed -= 20;
   }
 };
 
-document.onkeydown = function (e) {
+document.addEventListener("keydown", (e) => {
   if (hasCollision()) {
     return;
   }
@@ -235,39 +242,40 @@ document.onkeydown = function (e) {
     rotateFigure();
   }
   addFigure();
-  update();
-  updateNextFigure();
-};
+  update(figure);
+  // updateNextFigure();
+});
 
 const startGame = () => {
   moveFigureDown();
   if (hasCollision()) {
     let restart = confirm(
-      `Вы проиграли со счётом ${scoreInnerHtml}. Начать игру заново?`
+      `Вы проиграли со счётом ${scoreValue}. Начать игру заново?`
     );
     if (restart) {
-      playBoard;
+      playBoard = new Array(arrayHeight)
+        .fill(null)
+        .map(() => new Array(arrayWidth).fill(0));
     } else {
       return;
     }
   }
   addFigure();
   update();
-  updateNextFigure();
+  // updateNextFigure();
 
   setTimeout(startGame, gameSpeed);
 };
 
-$speed.addEventListener("change", (event) => {
+$initialGameSpeed.addEventListener("change", (event) => {
   gameSpeed = event.target.value;
 });
 
-let flag = true;
+let extraGameStop = true;
 
-$playBtn.addEventListener("click", () => {
-  if (flag) {
-    flag = false;
+$playBtn.addEventListener("click", (e) => {
+  if (extraGameStop) {
+    extraGameStop = false;
     return startGame();
   }
-  window.location.reload();
 });
