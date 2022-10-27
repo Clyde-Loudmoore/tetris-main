@@ -14,12 +14,12 @@ let gameSpeed = 400;
 let scoreValue = 0;
 let levelInnerHtml = 1;
 
-const arrayWidth = 10;
-const arrayHeight = 20;
+const FIELD_WIDTH = 10;
+const FIELD_HEIGHT = 20;
 
-let playBoard = new Array(arrayHeight)
+let playBoard = new Array(FIELD_HEIGHT)
   .fill(null)
-  .map(() => new Array(arrayWidth).fill(0));
+  .map(() => new Array(FIELD_WIDTH).fill(0));
 
 console.log(playBoard);
 
@@ -32,20 +32,21 @@ for (let i = 0; i < 200; i++) {
 let colorValue;
 
 const update = () => {
+  $playingField.innerHTML = "";
   colorValue = figure.color;
-  let divTetris = "";
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
       if (playBoard[y][x] === 1 || playBoard[y][x] === 9) {
-        divTetris += `<div class="${colorValue}"></div>`;
-        $playingField.innerHTML = divTetris;
+        $divTetris = document.createElement("div");
+        $divTetris.classList.add(`${colorValue}`);
+        $playingField.append($divTetris);
       } else {
-        divTetris += '<div class="tetris__cell"></div>';
+        $divTetris = document.createElement("div");
+        $divTetris.classList.add("tetris__cell");
+        $playingField.append($divTetris);
       }
     }
   }
-
-  $playingField.innerHTML = divTetris;
   if (hasCollision()) {
     return;
   }
@@ -124,7 +125,7 @@ const getNewFigure = () => {
   const midfield = figuresNameList.length - 1;
   const figure = figures[figuresNameList[getRandomNum(midfield)]];
   return {
-    x: Math.ceil((arrayWidth - 2) / 2),
+    x: Math.ceil((FIELD_WIDTH - 2) / 2),
     y: 0,
     shape: figure,
     color: randomColor,
@@ -206,7 +207,7 @@ const removeFullLines = () => {
     }
     if (isLineRemoved) {
       playBoard.splice(y, 1);
-      playBoard.splice(0, 0, new Array(arrayWidth).fill(0));
+      playBoard.splice(0, 0, new Array(FIELD_WIDTH).fill(0));
       scoring(isLineRemoved);
     }
     isLineRemoved = true;
@@ -253,9 +254,9 @@ const startGame = () => {
       `Вы проиграли со счётом ${scoreValue}. Начать игру заново?`
     );
     if (restart) {
-      playBoard = new Array(arrayHeight)
+      playBoard = new Array(FIELD_HEIGHT)
         .fill(null)
-        .map(() => new Array(arrayWidth).fill(0));
+        .map(() => new Array(FIELD_WIDTH).fill(0));
     } else {
       return;
     }
