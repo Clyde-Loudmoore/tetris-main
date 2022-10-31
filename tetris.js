@@ -100,10 +100,10 @@ const colorIndex = colorsNameList.length - 1;
 
 const randomColor = getRandomNum(colorIndex);
 
+const randomNumber = getRandomNum(colorIndex);
+
 const getNewFigure = () => {
   const randomColor = colors[getRandomNum(colorIndex)];
-
-  const randomNumber = getRandomNum(colorIndex);
   const midfield = figuresNameList.length - 1;
   const figure = figures[figuresNameList[getRandomNum(midfield)]];
   const randomNumbsInFigure = figure.map((item) => {
@@ -127,12 +127,26 @@ let colorValue;
 
 let figure = getNewFigure();
 
+const hasCollision = () => {
+  for (let y = 0; y < figure.shape.length; y++) {
+    for (let x = 0; x < figure.shape[y].length; x++) {
+      if (
+        playBoard[figure.y + y] === undefined ||
+        playBoard[figure.y + y][figure.x + x] === undefined
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 const update = () => {
   $playingField.innerHTML = "";
   colorValue = figure.color;
   for (let y = 0; y < playBoard.length; y++) {
     for (let x = 0; x < playBoard[y].length; x++) {
-      if (playBoard[y][x] !== 0) {
+      if (playBoard[y][x] !== 0 && playBoard[y][x] === randomNumber) {
         $divTetris = document.createElement("div");
         $divTetris.classList.add("tetris__cell");
         $divTetris.style.backgroundColor = `${colorValue}`;
@@ -175,6 +189,7 @@ const removePrevFigure = () => {
     }
   }
 };
+
 const addFigure = () => {
   removePrevFigure();
   for (let y = 0; y < figure.shape.length; y++) {
@@ -207,9 +222,9 @@ const fixedFigure = () => {
     }
   }
 };
+
 const moveFigureDown = () => {
   figure.y += 1;
-  console.log(playBoard);
   if (hasCollision()) {
     figure.y -= 1;
     fixedFigure();
@@ -219,19 +234,6 @@ const moveFigureDown = () => {
   }
 };
 
-const hasCollision = () => {
-  for (let y = 0; y < figure.shape.length; y++) {
-    for (let x = 0; x < figure.shape[y].length; x++) {
-      if (
-        playBoard[figure.y + y] === undefined ||
-        playBoard[figure.y + y][figure.x + x] === undefined
-      ) {
-        return true;
-      }
-    }
-  }
-  return false;
-};
 const removeFullLines = () => {
   let isLineRemoved = true;
   for (let y = 0; y < playBoard.length; y++) {
