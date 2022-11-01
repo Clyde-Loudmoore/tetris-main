@@ -29,7 +29,6 @@ for (let i = 0; i < FIELD_SIZE; i++) {
 }
 
 const update = () => {
-  // console.log(playBoard);
   $playingField.innerHTML = "";
 
   for (let y = 0; y < playBoard.length; y++) {
@@ -37,7 +36,7 @@ const update = () => {
       if (playBoard[y][x] !== 0) {
         $divTetris = document.createElement("div");
         $divTetris.classList.add("tetris__cell");
-        
+
         $divTetris.style.backgroundColor = `${figure.color}`;
         $playingField.append($divTetris);
       } else {
@@ -52,18 +51,19 @@ const update = () => {
   }
 };
 const updatePreview = () => {
-  let divTetrisPreview = "";
+  $nextFigure.innerHTML = "";
   for (let y = 0; y < nextFigureElem.shape.length; y++) {
     for (let x = 0; x < nextFigureElem.shape[y].length; x++) {
+      const $elementOne = document.createElement("div");
+      $elementOne.classList.add("tetris__cell");
       if (nextFigureElem.shape[y][x]) {
-        divTetrisPreview += `<div class="tetris__cell" style="background: ${figure.color}"></div>`;
-      } else {
-        divTetrisPreview += '<div class="tetris__cell"></div>';
+        $elementOne.style.backgroundColor = figure.color;
       }
+      $nextFigure.append($elementOne);
     }
-    divTetrisPreview += "<br/>";
+    const $elementTwo = document.createElement("br");
+    $nextFigure.append($elementTwo);
   }
-  $nextFigure.innerHTML = divTetrisPreview;
 };
 
 const figures = [
@@ -122,7 +122,6 @@ const randomNumber = getRandomNum(figureIndex);
 const getNewFigure = () => {
   const randomColor = colors[getRandomNum(figureIndex)];
   const randomFigure = figures[getRandomNum(figureIndex)];
-  console.log(randomColor);
   const randomNumbsInFigure = randomFigure.map((item) => {
     return item.map((elem) => {
       if (elem === 1) {
@@ -131,7 +130,6 @@ const getNewFigure = () => {
       return elem;
     });
   });
-  console.log(randomNumbsInFigure);
   const figure = {
     x: Math.ceil((FIELD_WIDTH - 2) / 2),
     y: 0,
